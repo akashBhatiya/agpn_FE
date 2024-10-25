@@ -22,7 +22,7 @@ import { useFormik } from "formik";
 //Import config
 // import { facebook, google } from "../../config";
 
-const Login = props => {
+const Login = () => {
   document.title = "Login | Agrippon - React Admin & Dashboard Template";
 
   const location = useLocation();
@@ -48,6 +48,9 @@ const Login = props => {
       login(values, rememberMe, navigateTo);
     }
   });
+  if(user){
+    navigate(navigateTo)
+  }
 
   useEffect(() => {
     document.body.className = "bg-pattern";

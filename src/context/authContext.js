@@ -71,21 +71,24 @@ export const AuthProvider = ({ children }) => {
     };
 
     const fetchCurrentUser = async () => {
+        setLoading(true);
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
             setToken(storedToken);
             try {
-                setLoading(true);
-                const response = await apiClient.get('/users/currentUser');
-                setUser(response.data.user);
-                setLoading(false);
+                const { data } = await apiClient.post('/users/currentUser');
+                const { token, user } = data;
+                if (data.status === "success" && token && user) {
+                    setUser(data.user);
+                    setToken(data.token);
+                } else {
+                    setError(data.message);
+                }
             } catch (err) {
                 setError(err.message);
-                setLoading(false);
             }
-        } else {
-            setLoading(false);
         }
+        setLoading(false);
     };
 
     useEffect(() => {
